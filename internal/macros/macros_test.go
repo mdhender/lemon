@@ -12,22 +12,27 @@ func TestParseMacroExpression(t *testing.T) {
 	variables := make(map[string]string)
 	variables["a"] = "true"
 	variables["b"] = "true"
-	for _, expr := range []string{
+	for i, expr := range []string{
 		"a",
-		"a&b",
-		"a&(b|c)",
+		"a && b",
+		"a && (b || c)",
 		"!a",
-		"!a&!b",
-		"(a)&!(b)",
-		"a&b&!(!(!(c)))",
+		"!a && !b",
+		"( a ) && ! ( b )",
+		"a || b || (((c)))",
+		"!(c)",
+		"!(!c)",
+		"!(!(c))",
 	} {
-		// Convert the postfix expression to infix
-		infixExpression, err := parseMacroExpression([]byte(expr), variables)
+		fmt.Printf("%2d: %q\n", i+1, expr)
+		result, err := parseExpression([]byte(expr))
 		if err != nil {
-			fmt.Printf("%q: error: %+v\n", expr, err)
+			fmt.Printf("%2d: --- error: %+v\n", i+1, err)
 		} else {
-			// Print the infix expression
-			fmt.Printf("%q: %q\n", expr, string(infixExpression))
+			// print the result
+			for _, tok := range result {
+				fmt.Printf("%2d: ... token %s\n", i+1, tok)
+			}
 		}
 	}
 }
