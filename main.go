@@ -6,7 +6,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/mdhender/lemon/internal/sets"
 	"os"
 )
 
@@ -135,16 +134,15 @@ func main() {
 	if rpflag {
 		Reprint(os.Stdout, lem)
 	} else {
-		/* Initialize the size for all follow and first sets */
-		sets.SetSize(lem.nterminal + 1)
+		///* Initialize the size for all follow and first sets */
+		//sets.SetSize(lem.nterminal + 1)
 
-		/* Find the precedence for every production rule (that has one) */
+		// Find the precedence for every production rule (that has one)
 		FindRulePrecedences(lem.rule)
 
-		///* Compute the lambda-nonterminals and the first-sets for every
-		// ** nonterminal */
-		//FindFirstSets(&lem);
-		//
+		// Compute the lambda-nonterminals and the first-sets for every nonterminal
+		FindFirstSets(lem)
+
 		///* Compute all LR(0) states.  Also record follow-set propagation
 		// ** links so that the follow-set can be computed later */
 		//lem.nstate = 0;
