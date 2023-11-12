@@ -6,8 +6,31 @@ package main
 import (
 	"bytes"
 	"github.com/mdhender/lemon/internal/macros"
+	"strings"
 	"unicode"
 )
+
+type macroSymbolTable map[string]string
+
+// String implements the flag.Value interface.
+func (m macroSymbolTable) String() string {
+	sb := strings.Builder{}
+	sb.WriteByte('[')
+	for k := range m {
+		if sb.Len() > 1 {
+			sb.Write([]byte{',', ' '})
+		}
+		sb.WriteString(k)
+	}
+	sb.WriteByte(']')
+	return sb.String()
+}
+
+// Set implements the flag.Value interface
+func (m macroSymbolTable) Set(name string) error {
+	m[name] = "true"
+	return nil
+}
 
 type macro struct {
 	kind         string // if, ifdef, or ifndef

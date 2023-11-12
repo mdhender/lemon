@@ -143,6 +143,7 @@ func parseSingleToken(psp *pstate) {
 		} else if isNonTerminalName(x) {
 			psp.lhs = Symbol_new(x)
 			psp.nrhs = 0
+			psp.rhs = nil
 			psp.lhsalias = ""
 			psp.state = WAITING_FOR_ARROW
 		} else if x[0] == '{' {
