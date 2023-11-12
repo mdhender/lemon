@@ -176,3 +176,38 @@ func (r *rule) printCursor(fp io.Writer, iCursor int) {
 		}
 	}
 }
+
+// FindRulePrecedences will find a precedence symbol of every rule in the grammar.
+func FindRulePrecedences(root *rule) {
+	for rp := root; rp != nil; rp = rp.next {
+		rp.findRulePrecedence()
+	}
+}
+
+// Those rules which have a precedence symbol coded in the input
+// grammar using the "[symbol]" construct will already have the
+// rp.precsym field filled.
+//
+// Other rules take as their precedence symbol the first RHS symbol
+// with a defined precedence.
+//
+// If there are not RHS symbols with a defined precedence, the precedence
+// symbol field is left blank.
+func (r *rule) findRulePrecedence() {
+	if r.precsym != nil {
+		return
+	}
+	for i := 0; i < r.nrhs && r.precsym == nil; i++ {
+		sp := r.rhs[i]
+		if sp.type_ == MULTITERMINAL {
+			for j := 0; j < sp.nsubsym; j++ {
+				if sp.subsym[j].prec >= 0 {
+					r.precsym = sp.subsym[j]
+					break
+				}
+			}
+		} else if sp.prec >= 0 {
+			r.precsym = r.rhs[i]
+		}
+	}
+}

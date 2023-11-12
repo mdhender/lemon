@@ -4,6 +4,7 @@
 package main
 
 import (
+	"github.com/mdhender/lemon/internal/sets"
 	"sort"
 	"unicode"
 	"unicode/utf8"
@@ -17,7 +18,7 @@ type symbol struct {
 	fallback   *symbol     // fallback token in case this token doesn't parse
 	prec       int         // Precedence if defined (-1 otherwise)
 	assoc      e_assoc     // Associativity if precedence is defined
-	firstset   *set        // First-set for all rules of this symbol // was ch
+	firstset   *sets.Set   // First-set for all rules of this symbol // was ch
 	lambda     bool        // True if NT and can generate an empty string
 	useCnt     int         // Number of times used
 	destructor string      // Code which executes whenever this symbol is popped from the stack during error processing

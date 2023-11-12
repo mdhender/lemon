@@ -6,6 +6,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/mdhender/lemon/internal/sets"
 	"os"
 )
 
@@ -133,5 +134,57 @@ func main() {
 	/* Generate a reprint of the grammar, if requested on the command line */
 	if rpflag {
 		Reprint(os.Stdout, lem)
+	} else {
+		/* Initialize the size for all follow and first sets */
+		sets.SetSize(lem.nterminal + 1)
+
+		/* Find the precedence for every production rule (that has one) */
+		FindRulePrecedences(lem.rule)
+
+		///* Compute the lambda-nonterminals and the first-sets for every
+		// ** nonterminal */
+		//FindFirstSets(&lem);
+		//
+		///* Compute all LR(0) states.  Also record follow-set propagation
+		// ** links so that the follow-set can be computed later */
+		//lem.nstate = 0;
+		//FindStates(&lem);
+		//lem.sorted = State_arrayof();
+		//
+		///* Tie up loose ends on the propagation links */
+		//FindLinks(&lem);
+		//
+		///* Compute the follow set of every reducible configuration */
+		//FindFollowSets(&lem);
+		//
+		///* Compute the action tables */
+		//FindActions(&lem);
+		//
+		///* Compress the action tables */
+		//if (compress == 0) {
+		//	CompressTables(&lem);
+		//}
+		//
+		///* Reorder and renumber the states so that states with fewer choices
+		// ** occur at the end.  This is an optimization that helps make the
+		// ** generated parser tables smaller. */
+		//if (noResort == 0) {
+		//	ResortStates(&lem);
+		//}
+		//
+		///* Generate a report of the parser generated.  (the "y.output" file) */
+		//if (!quiet) {
+		//	ReportOutput(&lem);
+		//}
+		//
+		///* Generate the source code for the parser */
+		//ReportTable(&lem, mhflag, sqlFlag);
+		//
+		///* Produce a header file for use by the scanner.  (This step is
+		// ** omitted if the "-m" option is used because makeheaders will
+		// ** generate the file for us.) */
+		//if (!mhflag) {
+		//	ReportHeader(&lem);
+		//}
 	}
 }
